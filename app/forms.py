@@ -327,7 +327,7 @@ class CircleSearchForm(FlaskForm):
             ('50', 'Within 50 miles'),
             ('100', 'Within 100 miles')
         ],
-        default='',
+        default='25',
         validators=[Optional()]
     )
     submit = SubmitField('Search')
