@@ -10,6 +10,7 @@ Stay up on what's happening with Meutch. Improvements are constantly pushed to t
 - Implement an activity feed for the home page, replacing Giveaways and Requests dedicated pages ([#259](https://github.com/sfirke/meutch/pull/259)).
 - Overhaul user's view of own profile ([#228](https://github.com/sfirke/meutch/pull/228)).
 - Improve search capabilities and combine search into the home page (now "Find") ([#251](https://github.com/sfirke/meutch/pull/251)).
+- Add configurable email digest system (daily/weekly/none), including signup/profile/admin controls, digest content based on feed activity, and shared daily scheduler integration with loan reminder job ([#280](https://github.com/sfirke/meutch/pull/280)).
 
 **Minor**
 - Hide pending-pickup claimed giveaways from view of users other than owner and recipient, create item-unavailable page, improve formatting of rehomed item ([#215](https://github.com/sfirke/meutch/pull/215)).
@@ -65,6 +66,7 @@ Stay up on what's happening with Meutch. Improvements are constantly pushed to t
 - Make giveaway cards easier to distinguish from loans by using a diagonal FREE ribbon in feed/search item cards ([#223](https://github.com/sfirke/meutch/pull/223)).
 
 ### Developer Experience
+- Add manual testing overrides for scheduled email job (`flask check-loan-reminders`) so developers can repeatedly test digest and loan reminder email flows without waiting for natural cadence windows.
 - Create separate dev (sample data) vs. test databases so they stop stepping on each others' toes ([#206](https://github.com/sfirke/meutch/pull/206)).
 
 ## Jan 2026
