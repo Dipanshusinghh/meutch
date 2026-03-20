@@ -14,8 +14,8 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link {% if active_tab == 'active-loans' %}active{% endif %}" id="active-loans-tab" data-bs-toggle="tab" data-bs-target="#active-loans" type="button" role="tab" aria-controls="active-loans" aria-selected="{{ 'true' if active_tab == 'active-loans' else 'false' }}">
-                <i class="fas fa-exchange-alt me-2"></i>Active Loans
+            <button class="nav-link {% if active_tab == 'my-activity' %}active{% endif %}" id="my-activity-tab" data-bs-toggle="tab" data-bs-target="#my-activity" type="button" role="tab" aria-controls="my-activity" aria-selected="{{ 'true' if active_tab == 'my-activity' else 'false' }}">
+                <i class="fas fa-exchange-alt me-2"></i>My Activity
                 {% if borrowing or lending %}
                     <span class="badge bg-secondary ms-1">{{ (borrowing|length) + (lending|length) }}</span>
                 {% endif %}
@@ -239,8 +239,8 @@
             {% endif %}
         </div>
 
-        <!-- ======================== ACTIVE LOANS TAB ======================== -->
-        <div class="tab-pane fade {% if active_tab == 'active-loans' %}show active{% endif %}" id="active-loans" role="tabpanel" aria-labelledby="active-loans-tab">
+        <!-- ======================== MY ACTIVITY TAB ======================== -->
+        <div class="tab-pane fade {% if active_tab == 'my-activity' %}show active{% endif %}" id="my-activity" role="tabpanel" aria-labelledby="my-activity-tab">
 
             {% if current_user == user %}
                 <!-- Currently Borrowing -->
@@ -362,6 +362,100 @@
                         <p>You are not currently lending any items.</p>
                     {% endif %}
                 </div>
+
+                <!-- My Requests -->
+                <div class="mb-5">
+                    <h4><i class="fas fa-clipboard-list me-2"></i>My Requests</h4>
+                    {% if active_requests.items or past_requests.items %}
+                        {% if active_requests.items %}
+                            <h6 class="text-muted mb-3">Active</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <colgroup>
+                                        <col style="width:55%">
+                                        <col style="width:15%">
+                                        <col style="width:15%">
+                                        <col style="width:15%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>Request</th>
+                                            <th>Visibility</th>
+                                            <th>Expires</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for req in active_requests.items %}
+                                            <tr>
+                                                <td><a href="{{ url_for('requests.detail', request_id=req.id) }}">{{ req.title }}</a></td>
+                                                <td>{{ 'My Circles' if req.visibility == 'circles' else 'Public' }}</td>
+                                                <td>{{ req.expires_at.strftime('%Y-%m-%d') }}</td>
+                                                <td>
+                                                    <a href="{{ url_for('requests.edit', request_id=req.id) }}" class="btn btn-sm btn-info">Edit</a>
+                                                    <form method="POST" action="{{ url_for('requests.delete', request_id=req.id) }}" class="d-inline">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% if active_requests.pages > 1 %}
+                            <nav>
+                                <ul class="pagination pagination-sm">
+                                    {% for p in active_requests.iter_pages() %}
+                                        {% if p %}
+                                            <li class="page-item {% if p == active_requests.page %}active{% endif %}">
+                                                <a class="page-link" href="?active_tab=my-activity&active_requests_page={{ p }}">{{ p }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </nav>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if past_requests.items %}
+                            <h6 class="text-muted mb-3 {% if active_requests.items %}mt-4{% endif %}">Recently Fulfilled</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <colgroup>
+                                        <col style="width:55%">
+                                        <col style="width:15%">
+                                        <col style="width:15%">
+                                        <col style="width:15%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>Request</th>
+                                            <th>Visibility</th>
+                                            <th>Fulfilled</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for req in past_requests.items %}
+                                            <tr>
+                                                <td><a href="{{ url_for('requests.detail', request_id=req.id) }}">{{ req.title }}</a></td>
+                                                <td>{{ 'My Circles' if req.visibility == 'circles' else 'Public' }}</td>
+                                                <td>{{ req.fulfilled_at.strftime('%Y-%m-%d') }}</td>
+                                                <td></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <p>You have no active or recently fulfilled requests.</p>
+                    {% endif %}
+                </div>
+
             {% endif %}
         </div>
 

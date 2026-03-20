@@ -229,8 +229,8 @@ class TestRequestsFeedFiltering:
             assert response.status_code == 200
             assert b'Old fulfilled request' not in response.data
 
-    def test_feed_hides_own_fulfilled_request_within_90_days(self, client, app, auth_user):
-        """Test that user's own fulfilled requests within 90 days are hidden."""
+    def test_feed_excludes_own_fulfilled_requests(self, client, app, auth_user):
+        """Test that the homepage feed never shows a user's own fulfilled requests."""
         with app.app_context():
             user = auth_user()
             db.session.commit()
@@ -249,8 +249,8 @@ class TestRequestsFeedFiltering:
             assert response.status_code == 200
             assert b'My request from 30 days ago' not in response.data
 
-    def test_feed_hides_own_expired_request_within_90_days(self, client, app, auth_user):
-        """Test that user's own expired requests within 90 days are hidden."""
+    def test_feed_excludes_own_expired_requests(self, client, app, auth_user):
+        """Test that the homepage feed never shows a user's own expired requests."""
         with app.app_context():
             user = auth_user()
             db.session.commit()
@@ -312,8 +312,8 @@ class TestRequestsFeedFiltering:
             assert response.status_code == 200
             assert b'Vacation request' not in response.data
 
-    def test_feed_own_requests_section(self, client, app, auth_user):
-        """Test homepage feed has no dedicated My Requests section."""
+    def test_feed_never_shows_own_requests(self, client, app, auth_user):
+        """Test that the homepage feed never shows a user's own open requests."""
         with app.app_context():
             user = auth_user()
             circle = CircleFactory()
