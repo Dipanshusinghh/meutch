@@ -1,12 +1,13 @@
 """Integration tests for share link routes."""
-from datetime import datetime, UTC, timedelta
+from datetime import date, datetime, UTC, timedelta
 from unittest.mock import patch
 
 import pytest
 from app import db
-from tests.factories import UserFactory, ItemFactory, CircleFactory, ItemRequestFactory
+from app.utils.item_share import generate_item_share_token
+from tests.factories import UserFactory, ItemFactory, CircleFactory, ItemRequestFactory, LoanRequestFactory
 from conftest import login_user
-
+import uuid
 
 class TestGiveawaySharePreview:
     """Tests for the giveaway share preview page."""
@@ -160,7 +161,6 @@ class TestGiveawaySharePreview:
 
     def test_nonexistent_giveaway_returns_404(self, client, app):
         """Test that a non-existent item ID returns 404."""
-        import uuid
         response = client.get(f'/share/giveaway/{uuid.uuid4()}')
         assert response.status_code == 404
 
@@ -450,7 +450,6 @@ class TestRequestSharePreview:
 
     def test_nonexistent_request_returns_404(self, client, app):
         """Test that a non-existent request ID returns 404."""
-        import uuid
         response = client.get(f'/share/request/{uuid.uuid4()}')
         assert response.status_code == 404
 
@@ -668,7 +667,6 @@ class TestCircleSharePreview:
 
     def test_nonexistent_circle_returns_404(self, client, app):
         """Test that a non-existent circle ID returns 404."""
-        import uuid
         response = client.get(f'/share/circle/{uuid.uuid4()}')
         assert response.status_code == 404
 
@@ -849,3 +847,153 @@ class TestRegisterNextParam:
             mock_send.assert_called_once()
             _, kwargs = mock_send.call_args
             assert kwargs.get('next_url') == '/circles/some-id'
+
+
+class TestItemSharePreview:
+    """Tests for tokenized item share previews and access control."""
+
+    def test_item_share_preview_accessible_to_anonymous_user(self, client, app):
+        with app.app_context():
+            item = ItemFactory(name='Shared Drill', is_giveaway=False)
+            token = generate_item_share_token(item)
+
+            response = client.get(f'/share/item/{token}')
+
+            assert response.status_code == 200
+            assert b'Shared Drill' in response.data
+            assert item.owner.first_name.encode() in response.data
+            assert b'Sign Up' in response.data
+            assert b'Log In' in response.data
+
+    def test_item_share_preview_redirects_authenticated_user_to_item_detail(self, client, app):
+        with app.app_context():
+            viewer = UserFactory()
+            item = ItemFactory(is_giveaway=False)
+            token = generate_item_share_token(item)
+            db.session.commit()
+
+            login_user(client, viewer.email)
+            response = client.get(f'/share/item/{token}')
+
+            assert response.status_code == 302
+            assert f'/item/{item.id}?share_token={token}'.encode() in response.headers['Location'].encode()
+
+    def test_item_share_preview_redirects_circle_member_without_token(self, client, app):
+        with app.app_context():
+            viewer = UserFactory()
+            item = ItemFactory(is_giveaway=False)
+            circle = CircleFactory()
+            circle.members.extend([viewer, item.owner])
+            token = generate_item_share_token(item)
+            db.session.commit()
+
+            login_user(client, viewer.email)
+            response = client.get(f'/share/item/{token}')
+
+            assert response.status_code == 302
+            assert response.headers['Location'] == f'/item/{item.id}'
+
+    def test_item_share_preview_404_for_invalid_token(self, client):
+        response = client.get('/share/item/not-a-real-token')
+        assert response.status_code == 404
+
+    def test_item_share_generate_route_shows_owner_link_panel(self, client, app):
+        with app.app_context():
+            owner = UserFactory()
+            item = ItemFactory(owner=owner, is_giveaway=False)
+            db.session.commit()
+
+            login_user(client, owner.email)
+            response = client.post(f'/share/item/{item.id}/generate', data={}, follow_redirects=True)
+
+            assert response.status_code == 200
+            assert b'Anyone with this link can view this item on the web for 30 days' in response.data
+            assert b'/share/item/' in response.data
+
+    def test_item_detail_forbidden_without_shared_circle_or_token(self, client, app):
+        with app.app_context():
+            viewer = UserFactory()
+            item = ItemFactory(is_giveaway=False)
+            db.session.commit()
+
+            login_user(client, viewer.email)
+            response = client.get(f'/item/{item.id}')
+
+            assert response.status_code == 403
+
+    def test_item_detail_accessible_with_valid_share_token(self, client, app):
+        with app.app_context():
+            viewer = UserFactory()
+            item = ItemFactory(is_giveaway=False)
+            token = generate_item_share_token(item)
+            db.session.commit()
+
+            login_user(client, viewer.email)
+            response = client.get(f'/item/{item.id}?share_token={token}')
+
+            assert response.status_code == 200
+            assert b'You are viewing this item through a shared link' in response.data
+            assert b'Request to Borrow' in response.data
+
+    def test_request_item_forbidden_without_shared_circle_or_token(self, client, app):
+        with app.app_context():
+            borrower = UserFactory()
+            item = ItemFactory(is_giveaway=False)
+            db.session.commit()
+
+            login_user(client, borrower.email)
+            response = client.get(f'/items/{item.id}/request')
+
+            assert response.status_code == 403
+
+    def test_request_item_accessible_with_valid_share_token(self, client, app):
+        with app.app_context():
+            borrower = UserFactory()
+            item = ItemFactory(is_giveaway=False)
+            token = generate_item_share_token(item)
+            db.session.commit()
+
+            login_user(client, borrower.email)
+            response = client.get(f'/items/{item.id}/request?share_token={token}')
+
+            assert response.status_code == 200
+            assert b'Request to Borrow' in response.data
+
+    def test_request_item_submit_with_valid_share_token(self, client, app):
+        with app.app_context():
+            borrower = UserFactory(email='share-borrower@example.com')
+            item = ItemFactory(is_giveaway=False)
+            token = generate_item_share_token(item)
+            db.session.commit()
+
+            login_user(client, borrower.email)
+
+            start_date = date.today() + timedelta(days=1)
+            end_date = date.today() + timedelta(days=5)
+
+            response = client.post(
+                f'/items/{item.id}/request?share_token={token}',
+                data={
+                    'start_date': start_date.strftime('%Y-%m-%d'),
+                    'end_date': end_date.strftime('%Y-%m-%d'),
+                    'message': 'Could I borrow this next week?'
+                },
+                follow_redirects=True,
+            )
+
+            assert response.status_code == 200
+            assert b'Your loan request has been submitted.' in response.data
+
+    def test_item_detail_accessible_to_active_borrower_after_token_expiry(self, client, app):
+        """A borrower with an approved loan can view item_detail even without a valid token."""
+        with app.app_context():
+            borrower = UserFactory()
+            item = ItemFactory(is_giveaway=False, available=False)
+            LoanRequestFactory(item=item, borrower=borrower, status='approved')
+            db.session.commit()
+
+            login_user(client, borrower.email)
+            response = client.get(f'/item/{item.id}')
+
+            assert response.status_code == 200
+            assert item.name.encode() in response.data
