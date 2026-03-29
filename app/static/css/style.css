@@ -797,6 +797,11 @@ footer h6 {
     top: 100px;
 }
 
+.item-detail-image-inner {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+}
+
 .item-detail-image {
     width: 100%;
     height: auto;
@@ -860,7 +865,7 @@ footer h6 {
     }
     
     .item-detail-image {
-        max-height: none;
+        max-height: 60vh;
     }
     
     .item-detail-image-placeholder {
