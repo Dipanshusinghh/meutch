@@ -34,6 +34,8 @@ Stay up on what's happening with Meutch. Improvements are constantly pushed to t
 - Fix: hide members of a closed circle from being viewable in search results ([#273](https://github.com/sfirke/meutch/pull/273)).
 - Fix: consolidate digest display/change UI in the admin panel to eliminate scrollbar ([#291](https://github.com/sfirke/meutch/pull/291)).
 
+### Developer Experience
+- Add hash-based cache-busting for CSS and JS static files so browsers always load the latest styles and scripts after a deploy ([#230](https://github.com/sfirke/meutch/pull/230)).
 
 ## Feb 2026
 
