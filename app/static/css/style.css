@@ -1220,7 +1220,6 @@ footer h6 {
    FIX: Image Cropper Drag Nodes Symmetry
    =================================================================== */
 
-/* Sabhi drag points (blue circles) ka size fix karne ke liye */
 .cropper-point {
     width: 10px !important;
     height: 10px !important;
