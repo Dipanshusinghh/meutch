@@ -1219,49 +1219,46 @@ footer h6 {
 /* ===================================================================
    FIX: Image Cropper Drag Nodes Symmetry
    =================================================================== */
-
 .cropper-point {
     width: 10px !important;
     height: 10px !important;
     background-color: var(--primary-color) !important;
     opacity: 0.9 !important;
-    border: 1px solid white; /* Better visibility */
+    border: 1px solid white;
     border-radius: 50%;
+
+    /* 🔥 MOST IMPORTANT */
+    transform: translate(-50%, -50%) !important;
 }
 
-/* Southeast (Bottom-Right) corner node adjustment */
+/* Corners */
 .cropper-point.point-se {
-    right: -5px !important;
-    bottom: -5px !important;
-    width: 12px !important; 
-    height: 12px !important;
+    right: 0 !important;
+    bottom: 0 !important;
 }
 
-/* Southwest (Bottom-Left) corner node adjustment */
 .cropper-point.point-sw {
-    left: -5px !important;
-    bottom: -5px !important;
+    left: 0 !important;
+    bottom: 0 !important;
 }
 
-/* Northwest (Top-Left) corner node adjustment */
 .cropper-point.point-nw {
-    left: -5px !important;
-    top: -5px !important;
+    left: 0 !important;
+    top: 0 !important;
 }
 
-/* Northeast (Top-Right) corner node adjustment */
 .cropper-point.point-ne {
-    right: -5px !important;
-    top: -5px !important;
+    right: 0 !important;
+    top: 0 !important;
 }
 
-/* Middle side points alignment (Symmetry fix) */
-.cropper-point.point-n { top: -5px !important; }
-.cropper-point.point-s { bottom: -5px !important; }
-.cropper-point.point-e { right: -5px !important; }
-.cropper-point.point-w { left: -5px !important; }
+/* Sides (perfect center) */
+.cropper-point.point-n { top: 0 !important; left: 50% !important; }
+.cropper-point.point-s { bottom: 0 !important; left: 50% !important; }
+.cropper-point.point-e { right: 0 !important; top: 50% !important; }
+.cropper-point.point-w { left: 0 !important; top: 50% !important; }
 
-/* Ensure the SE handler icon doesn't shift the node */
+/* Remove icon shift */
 .cropper-point.point-se:before {
     display: none !important;
 }
