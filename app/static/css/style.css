@@ -1226,11 +1226,10 @@ footer h6 {
     border: 2px solid #fff !important;
     border-radius: 50%;
     opacity: 1 !important;
-
-    transform: none !important;   /* ❌ remove transform */
+    transform: none !important;
 }
 
-/* 🔥 CORNERS */
+/* Corners */
 .cropper-point.point-nw {
     top: 0 !important;
     left: 0 !important;
@@ -1259,7 +1258,7 @@ footer h6 {
     margin-right: -6px;
 }
 
-/* 🔥 SIDES */
+/* Sides */
 .cropper-point.point-n {
     top: 0 !important;
     left: 50% !important;
