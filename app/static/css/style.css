@@ -1219,12 +1219,6 @@ footer h6 {
 /* ===================================================================
    FIX: Image Cropper Drag Nodes Symmetry
    =================================================================== */
-/* Make sure crop box is relative */
-.cropper-crop-box {
-    position: relative !important;
-}
-
-/* COMMON STYLE */
 .cropper-point {
     width: 12px !important;
     height: 12px !important;
@@ -1232,65 +1226,66 @@ footer h6 {
     border: 2px solid #fff !important;
     border-radius: 50%;
     opacity: 1 !important;
-    box-sizing: border-box;
 
-    /* Reset unwanted transforms */
-    transform: none !important;
+    transform: none !important;   /* ❌ remove transform */
 }
 
-/* 🔥 CORNERS - exact outside alignment */
+/* 🔥 CORNERS */
 .cropper-point.point-nw {
     top: 0 !important;
     left: 0 !important;
-    transform: translate(-50%, -50%) !important;
+    margin-top: -6px;
+    margin-left: -6px;
 }
 
 .cropper-point.point-ne {
     top: 0 !important;
     right: 0 !important;
-    transform: translate(50%, -50%) !important;
+    margin-top: -6px;
+    margin-right: -6px;
 }
 
 .cropper-point.point-sw {
     bottom: 0 !important;
     left: 0 !important;
-    transform: translate(-50%, 50%) !important;
+    margin-bottom: -6px;
+    margin-left: -6px;
 }
 
 .cropper-point.point-se {
     bottom: 0 !important;
     right: 0 !important;
-    transform: translate(50%, 50%) !important;
+    margin-bottom: -6px;
+    margin-right: -6px;
 }
 
-/* 🔥 SIDES - perfectly centered */
+/* 🔥 SIDES */
 .cropper-point.point-n {
     top: 0 !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    margin-top: -6px;
+    margin-left: -6px;
 }
 
 .cropper-point.point-s {
     bottom: 0 !important;
     left: 50% !important;
-    transform: translate(-50%, 50%) !important;
+    margin-bottom: -6px;
+    margin-left: -6px;
 }
 
 .cropper-point.point-e {
     right: 0 !important;
     top: 50% !important;
-    transform: translate(50%, -50%) !important;
+    margin-top: -6px;
+    margin-right: -6px;
 }
 
 .cropper-point.point-w {
     left: 0 !important;
     top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-}
-
-/* ❌ Remove default arrow icon issue */
-.cropper-point.point-se::before {
-    display: none !important;
+    margin-top: -6px;
+    margin-left: -6px;
 }
 
 /* ============================================
