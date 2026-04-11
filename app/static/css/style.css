@@ -1216,23 +1216,55 @@ footer h6 {
     }
 }
 
-/* Photo Preview - Cropper.js Customization */
-/* Make all corner handles the same size for easier grabbing */
-.cropper-point {
-    width: 9px !important;
-    height: 9px !important;
-}
+/* ===================================================================
+   FIX: Image Cropper Drag Nodes Symmetry
+   =================================================================== */
 
-/* Ensure the visual indicator is consistent across all corners */
-.cropper-point.point-se {
-    width: 9px !important;
-    height: 9px !important;
-}
-
-/* Make corner points more visible with better contrast */
+/* Sabhi drag points (blue circles) ka size fix karne ke liye */
 .cropper-point {
-    opacity: 0.9 !important;
+    width: 10px !important;
+    height: 10px !important;
     background-color: var(--primary-color) !important;
+    opacity: 0.9 !important;
+    border: 1px solid white; /* Better visibility */
+    border-radius: 50%;
+}
+
+/* Southeast (Bottom-Right) corner node adjustment */
+.cropper-point.point-se {
+    right: -5px !important;
+    bottom: -5px !important;
+    width: 12px !important; 
+    height: 12px !important;
+}
+
+/* Southwest (Bottom-Left) corner node adjustment */
+.cropper-point.point-sw {
+    left: -5px !important;
+    bottom: -5px !important;
+}
+
+/* Northwest (Top-Left) corner node adjustment */
+.cropper-point.point-nw {
+    left: -5px !important;
+    top: -5px !important;
+}
+
+/* Northeast (Top-Right) corner node adjustment */
+.cropper-point.point-ne {
+    right: -5px !important;
+    top: -5px !important;
+}
+
+/* Middle side points alignment (Symmetry fix) */
+.cropper-point.point-n { top: -5px !important; }
+.cropper-point.point-s { bottom: -5px !important; }
+.cropper-point.point-e { right: -5px !important; }
+.cropper-point.point-w { left: -5px !important; }
+
+/* Ensure the SE handler icon doesn't shift the node */
+.cropper-point.point-se:before {
+    display: none !important;
 }
 
 /* ============================================
