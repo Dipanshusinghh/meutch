@@ -1,9 +1,7 @@
 /* Modern Meutch Styling */
 
 /* Root Variables for easy theming */
-body {
-    border: 5px solid red;
-}
+
 :root {
     --primary-color: #4fd1c7;        /* Soft teal */
     --primary-dark: #319795;         /* Darker teal */
