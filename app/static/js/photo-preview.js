@@ -326,10 +326,10 @@
             // Wait for image to load before initializing Cropper
             previewImage.onload = function() {
                 // Initialize Cropper.js
-                cropper = new Cropper(previewImage, {
-                    viewMode: 2, // Restrict canvas to container
+cropper = new Cropper(previewImage, {
+                    viewMode: 1,
                     dragMode: 'move',
-                    aspectRatio: NaN, // Free aspect ratio
+                    aspectRatio: NaN,
                     autoCropArea: 1,
                     restore: false,
                     guides: true,
@@ -344,7 +344,10 @@
                     zoomOnWheel: true,
                     zoomOnTouch: true,
                     rotatable: true,
-                    checkOrientation: true,
+                    checkOrientation: false,
+                    checkCrossOrigin: false,
+                    minCropBoxWidth: 10,
+                    minCropBoxHeight: 10,
                     minContainerWidth: 200,
                     minContainerHeight: 200
                 });
