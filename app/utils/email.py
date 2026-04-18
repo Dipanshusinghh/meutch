@@ -461,10 +461,7 @@ def _digest_event_url(event):
 
 
 def _digest_event_title(event):
-    event_type = event.get('event_type')
-    if event_type == 'circle_join':
-        return event.get('title') or 'Circle activity'
-    return event.get('title') or 'Community activity'
+    return event['title']
 
 
 def _digest_cadence_label(user):
@@ -474,6 +471,33 @@ def _digest_cadence_label(user):
     if cadence == 'weekly':
         return 'weekly'
     return 'off'
+
+
+def _format_names_list(names):
+    """Format ['Alice', 'Bob', 'Celeste'] as 'Alice, Bob, and Celeste'."""
+    if len(names) == 1:
+        return names[0]
+    if len(names) == 2:
+        return f'{names[0]} and {names[1]}'
+    return ', '.join(names[:-1]) + f', and {names[-1]}'
+
+
+def _group_circle_joins_for_digest(circle_joins):
+    """Group per-person circle-join events into per-circle groups for compact rendering."""
+    groups = {}
+    order = []
+    for event in circle_joins:
+        cid = event.get('circle_id')
+        if cid not in groups:
+            groups[cid] = {
+                'event': event,
+                'circle_name': event['title'],
+                'image_url': event.get('image_url'),
+                'actors': [],
+            }
+            order.append(cid)
+        groups[cid]['actors'].append(event['actor_name'])
+    return [groups[cid] for cid in order]
 
 
 def build_digest_email_content(user, digest_payload, manage_url, unsubscribe_url):
@@ -491,12 +515,12 @@ def build_digest_email_content(user, digest_payload, manage_url, unsubscribe_url
     subject = f"Meutch Digest - {total_activities} new activities"
 
     summary_entries = [
-        ("giveaways", len(giveaways)),
-        ("requests", len(requests)),
-        ("circle joins", len(circle_joins)),
-        ("loans", len(loans)),
+        ("giveaway", "giveaways", len(giveaways)),
+        ("request", "requests", len(requests)),
+        ("circle join", "circle joins", len(circle_joins)),
+        ("loan", "loans", len(loans)),
     ]
-    summary_lines = [f"- {count} {label}" for label, count in summary_entries if count > 0]
+    summary_lines = [f"- {count} {singular if count == 1 else plural}" for singular, plural, count in summary_entries if count > 0]
 
     text_lines = [
         f"Hello {user.first_name},",
@@ -515,9 +539,9 @@ def build_digest_email_content(user, digest_payload, manage_url, unsubscribe_url
             return
         text_lines.append(f"{section_title}:")
         for event in events:
-            actor = event.get('actor_name') or 'Someone'
+            actor = event['actor_name']
             title = _digest_event_title(event)
-            action = event.get('action') or 'shared'
+            action = event['action']
             text_lines.append(f"- {actor} {action}: {title}")
             if include_description and event.get('description'):
                 text_lines.append(f"  {event['description']}")
@@ -528,7 +552,18 @@ def build_digest_email_content(user, digest_payload, manage_url, unsubscribe_url
 
     append_text_section('Giveaways', giveaways, include_description=True)
     append_text_section('Requests', requests, include_description=True)
-    append_text_section('Circle Joins', circle_joins)
+
+    if circle_joins:
+        grouped_joins = _group_circle_joins_for_digest(circle_joins)
+        text_lines.append('Circle Joins:')
+        for group in grouped_joins:
+            count = len(group['actors'])
+            label = f"{count} {'person' if count == 1 else 'people'}"
+            names = _format_names_list(group['actors'])
+            text_lines.append(f"- {label} joined {group['circle_name']}: {names}")
+            text_lines.append(f"  {_digest_event_url(group['event'])}")
+        text_lines.append('')
+
     append_text_section('Loans', loans)
 
     text_lines.extend([
@@ -546,9 +581,9 @@ def build_digest_email_content(user, digest_payload, manage_url, unsubscribe_url
 
         items_html = []
         for event in events:
-            actor = event.get('actor_name') or 'Someone'
+            actor = event['actor_name']
             item_title = _digest_event_title(event)
-            action = event.get('action') or 'shared'
+            action = event['action']
             link = _digest_event_url(event)
             description_html = ''
             if include_description and event.get('description'):
@@ -581,6 +616,40 @@ def build_digest_email_content(user, digest_payload, manage_url, unsubscribe_url
         </ul>
         """
 
+    def _build_circle_joins_html_section(circle_join_events):
+        if not circle_join_events:
+            return ''
+        grouped = _group_circle_joins_for_digest(circle_join_events)
+        items_html = []
+        for group in grouped:
+            count = len(group['actors'])
+            label = f"{count} {'person' if count == 1 else 'people'}"
+            names = _format_names_list(group['actors'])
+            link = _digest_event_url(group['event'])
+            image_html = ''
+            if group['image_url']:
+                image_html = (
+                    f"<div style=\"margin: 8px 0;\">"
+                    f"<img src=\"{group['image_url']}\" alt=\"Circle image\" "
+                    f"style=\"max-width: 100%; width: 220px; height: auto; border-radius: 8px;\">"
+                    f"</div>"
+                )
+            items_html.append(
+                f"""
+                <li style=\"margin-bottom: 10px;\">
+                    <strong>{label}</strong> joined {group['circle_name']}: {names}<br>
+                    {image_html}
+                    <a href=\"{link}\" style=\"color: #007bff; text-decoration: none;\">View circle</a>
+                </li>
+                """
+            )
+        return f"""
+        <h3 style=\"margin-top: 24px; color: #333;\">Circle Joins</h3>
+        <ul style=\"padding-left: 20px;\">
+            {''.join(items_html)}
+        </ul>
+        """
+
     summary_html = ''
     if summary_lines:
         summary_items_html = ''.join(
@@ -604,7 +673,7 @@ def build_digest_email_content(user, digest_payload, manage_url, unsubscribe_url
 
         {build_html_section('Giveaways', giveaways, include_description=True)}
         {build_html_section('Requests', requests, include_description=True)}
-        {build_html_section('Circle Joins', circle_joins)}
+        {_build_circle_joins_html_section(circle_joins)}
         {build_html_section('Loans', loans)}
 
         <hr style=\"margin: 28px 0; border: none; border-top: 1px solid #ddd;\">
