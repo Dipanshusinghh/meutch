@@ -36,7 +36,68 @@
                 else if (c) { node.appendChild(c); }
             });
         }
+<<<<<<< HEAD
         return node;
+=======
+        
+        const reader = new FileReader();
+        
+        reader.onerror = function() {
+            Notifications.error('Failed to read image file. Please try another file.');
+        };
+        
+        reader.onload = function(e) {
+            // Validate the result is a data URL
+            if (!e.target.result || !e.target.result.startsWith('data:image/')) {
+                Notifications.error('Failed to load image. Please try another file.');
+                return;
+            }
+            
+            // Destroy existing cropper instance
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+
+            // Set image source
+            previewImage.src = e.target.result;
+            previewContainer.style.display = 'block';
+
+            // Clean up previous onload handler to prevent memory leaks
+            previewImage.onload = null;
+            
+            // Wait for image to load before initializing Cropper
+            previewImage.onload = function() {
+                // Initialize Cropper.js
+cropper = new Cropper(previewImage, {
+                    viewMode: 1,
+                    dragMode: 'move',
+                    aspectRatio: NaN,
+                    autoCropArea: 1,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                    responsive: true,
+                    background: false,
+                    zoomable: true,
+                    zoomOnWheel: true,
+                    zoomOnTouch: true,
+                    rotatable: true,
+                    checkOrientation: false,
+                    checkCrossOrigin: false,
+                    minCropBoxWidth: 10,
+                    minCropBoxHeight: 10,
+                    minContainerWidth: 200,
+                    minContainerHeight: 200
+                });
+            };
+        };
+        reader.readAsDataURL(file);
+>>>>>>> 2727f37 (style: fix cropper initialization in photo-preview)
     }
 
     function icon(faClass) {
