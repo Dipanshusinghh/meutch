@@ -1217,23 +1217,31 @@ footer h6 {
 }
 
 /* ===================================================================
-   FIX: Image Cropper Drag Nodes Symmetry
+   FINAL FIX: Image Cropper Drag Nodes (Stable + Responsive)
    =================================================================== */
+
+/* Base drag points */
 .cropper-point {
-    width: 14px !important;
-    height: 14px !important;
+    width: 18px !important;
+    height: 18px !important;
     background-color: var(--primary-color) !important;
     opacity: 1 !important;
-    border: 2px solid white !important;
+    border: 2px solid #fff !important;
     border-radius: 50% !important;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3) !important;
     touch-action: none !important;
-
-    /* 🔥 MOST IMPORTANT - Symmetry fix */
-    transform: translate(-50%, -50%) !important;
+    cursor: grab;
 }
 
-/* Corners */
+/* Active drag feel */
+.cropper-point:active {
+    cursor: grabbing;
+    transform: scale(1.2);
+}
+
+/* -------------------------------
+   CORNERS (no transform needed)
+--------------------------------*/
 .cropper-point.point-se {
     right: 0 !important;
     bottom: 0 !important;
@@ -1254,24 +1262,47 @@ footer h6 {
     top: 0 !important;
 }
 
-/* Sides - perfect center */
-.cropper-point.point-n { top: 0 !important; left: 50% !important; }
-.cropper-point.point-s { bottom: 0 !important; left: 50% !important; }
-.cropper-point.point-e { right: 0 !important; top: 50% !important; }
-.cropper-point.point-w { left: 0 !important; top: 50% !important; }
+/* -------------------------------
+   SIDES (perfect centering)
+--------------------------------*/
+.cropper-point.point-n,
+.cropper-point.point-s {
+    left: 50% !important;
+    transform: translateX(-50%);
+}
 
-/* Remove icon shift */
-.cropper-point.point-se:before {
+.cropper-point.point-e,
+.cropper-point.point-w {
+    top: 50% !important;
+    transform: translateY(-50%);
+}
+
+/* Remove default icon shift */
+.cropper-point.point-se::before {
     display: none !important;
 }
 
-/* Fast drag fix */
-.cropper-container {
+/* -------------------------------
+   MOBILE OPTIMIZATION
+--------------------------------*/
+@media (max-width: 768px) {
+    .cropper-point {
+        width: 24px !important;
+        height: 24px !important;
+    }
+}
+
+/* -------------------------------
+   TOUCH FIX (important)
+--------------------------------*/
+.cropper-container,
+.cropper-crop-box {
     touch-action: none !important;
 }
 
-.cropper-crop-box {
-    touch-action: none !important;
+/* Optional: smooth interaction */
+.cropper-face {
+    cursor: move;
 }
 /* ============================================
    Requests Feed — Social-media-style cards
