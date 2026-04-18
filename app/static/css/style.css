@@ -1220,14 +1220,16 @@ footer h6 {
    FIX: Image Cropper Drag Nodes Symmetry
    =================================================================== */
 .cropper-point {
-    width: 10px !important;
-    height: 10px !important;
+    width: 14px !important;
+    height: 14px !important;
     background-color: var(--primary-color) !important;
-    opacity: 0.9 !important;
-    border: 1px solid white;
-    border-radius: 50%;
+    opacity: 1 !important;
+    border: 2px solid white !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4) !important;
+    touch-action: none !important;
 
-    /* 🔥 MOST IMPORTANT */
+    /* 🔥 MOST IMPORTANT - Symmetry fix */
     transform: translate(-50%, -50%) !important;
 }
 
@@ -1252,7 +1254,7 @@ footer h6 {
     top: 0 !important;
 }
 
-/* Sides (perfect center) */
+/* Sides - perfect center */
 .cropper-point.point-n { top: 0 !important; left: 50% !important; }
 .cropper-point.point-s { bottom: 0 !important; left: 50% !important; }
 .cropper-point.point-e { right: 0 !important; top: 50% !important; }
@@ -1263,6 +1265,14 @@ footer h6 {
     display: none !important;
 }
 
+/* Fast drag fix */
+.cropper-container {
+    touch-action: none !important;
+}
+
+.cropper-crop-box {
+    touch-action: none !important;
+}
 /* ============================================
    Requests Feed — Social-media-style cards
    ============================================ */
