@@ -220,7 +220,7 @@
                 viewMode: 2,
                 dragMode: 'move',
                 aspectRatio: NaN,
-                autoCropArea: 1,
+                autoCropArea: 0.8,
                 restore: false,
                 guides: true,
                 center: true,
