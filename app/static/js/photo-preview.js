@@ -186,150 +186,70 @@
 
         applyBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            fileInput.value = '';
-            currentFile = null;
-            hidePreview(previewContainer);
+            if (!cropper) return;
             
-            // Trigger change event to update file info display
-            const event = new Event('change', { bubbles: true });
-            fileInput.dispatchEvent(event);
-        });
-        
-        // Add form submit handler to ensure cropped image is used
-        const form = fileInput.closest('form');
-        if (form) {
-            // Track if we've already processed the image
-            let imageProcessed = false;
-            let pendingSubmitter = null;
-
-            // Capture clicked submit button for browsers that don't support e.submitter
-            form.querySelectorAll('[type="submit"]').forEach(function(btn) {
-                btn.addEventListener('click', function() { pendingSubmitter = btn; });
-            });
-
-            form.addEventListener('submit', function(e) {
-                // e.submitter is more reliable than click tracking when available
-                if (e.submitter) pendingSubmitter = e.submitter;
-
-                if (cropper && currentFile && !imageProcessed) {
-                    // Prevent the form from submitting until we process the image
-                    e.preventDefault();
-                    // Capture now so the async callback uses the correct button
-                    const submitter = pendingSubmitter;
-
-                    // Update file input with final cropped/rotated version
-                    updateFileInputWithCroppedImage(fileInput, function() {
-                        imageProcessed = true;
-
-                        // requestSubmit preserves submitter identity and reruns validation
-                        if (typeof form.requestSubmit === 'function') {
-                            form.requestSubmit(submitter || undefined);
-                            return;
+            cropper.getCroppedCanvas({
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high'
+            }).toBlob(function(blob) {
+                if (blob) {
+                    document.dispatchEvent(new CustomEvent('multi-image:cropped', {
+                        detail: {
+                            id: editId,
+                            container: editContainer,
+                            thumbEl: editThumbEl,
+                            blob: blob
                         }
-
-                        // Legacy fallback: inject button identity as a hidden field before raw submit
-                        if (submitter && submitter.name) {
-                            const hidden = document.createElement('input');
-                            hidden.type = 'hidden';
-                            hidden.name = submitter.name;
-                            hidden.value = submitter.value || '';
-                            form.appendChild(hidden);
-                        }
-
-                        HTMLFormElement.prototype.submit.call(form);
-                    });
+                    }));
                 }
-            });
-        }
+                hideModal();
+            }, 'image/jpeg', 0.9);
+        });
     }
 
-    /**
-     * Display an image in the preview
-     * @param {File} file - The image file to display
-     * @param {HTMLElement} previewImage - The preview image element
-     * @param {HTMLElement} previewContainer - The preview container element
-     */
-    function displayImage(file, previewImage, previewContainer) {
-        // Additional security check
-        if (!file || !file.type || !file.type.startsWith('image/')) {
-            return;
+    function showModal(srcUrl) {
+        if (!modalInstance) {
+            modalInstance = new bootstrap.Modal(modalEl);
         }
         
-        const reader = new FileReader();
+        cropImage.src = srcUrl;
         
-        reader.onerror = function() {
-            Notifications.error('Failed to read image file. Please try another file.');
-        };
-        
-        reader.onload = function(e) {
-            // Validate the result is a data URL
-            if (!e.target.result || !e.target.result.startsWith('data:image/')) {
-                Notifications.error('Failed to load image. Please try another file.');
-                return;
-            }
-            
-            // Destroy existing cropper instance
-            if (cropper) {
-                cropper.destroy();
-                cropper = null;
-            }
-
-            // Set image source
-            previewImage.src = e.target.result;
-            previewContainer.style.display = 'block';
-
-            // Clean up previous onload handler to prevent memory leaks
-            previewImage.onload = null;
-            
-            // Wait for image to load before initializing Cropper
-            previewImage.onload = function() {
-                // Initialize Cropper.js
-cropper = new Cropper(previewImage, {
-                    viewMode: 1,
-                    dragMode: 'move',
-                    aspectRatio: NaN,
-                    autoCropArea: 1,
-                    restore: false,
-                    guides: true,
-                    center: true,
-                    highlight: false,
-                    cropBoxMovable: true,
-                    cropBoxResizable: true,
-                    toggleDragModeOnDblclick: false,
-                    responsive: true,
-                    background: false,
-                    zoomable: true,
-                    zoomOnWheel: true,
-                    zoomOnTouch: true,
-                    rotatable: true,
-                    checkOrientation: false,
-                    checkCrossOrigin: false,
-                    minCropBoxWidth: 10,
-                    minCropBoxHeight: 10,
-                    minContainerWidth: 200,
-                    minContainerHeight: 200
-                });
-            };
-        };
-        reader.readAsDataURL(file);
-    }
-
-    /**
-     * Hide the preview container
-     * @param {HTMLElement} previewContainer - The preview container element
-     */
-    function hidePreview(previewContainer) {
-        previewContainer.style.display = 'none';
-        if (cropper) {
-            cropper.destroy();
-            cropper = null;
-        }
-        modalInstance.show();
-
         // Wait until modal is visible so Cropper can measure the container
         modalEl.addEventListener('shown.bs.modal', function onShown() {
             modalEl.removeEventListener('shown.bs.modal', onShown);
-            initCropper(src);
+            initCropper(srcUrl);
+        });
+        
+        modalInstance.show();
+    }
+
+    function initCropper(src) {
+        destroyCropper();
+        
+        cropper = new Cropper(cropImage, {
+            viewMode: 1,
+            dragMode: 'move',
+            aspectRatio: NaN,
+            autoCropArea: 1,
+            restore: false,
+            guides: true,
+            center: true,
+            highlight: false,
+            cropBoxMovable: true,
+            cropBoxResizable: true,
+            toggleDragModeOnDblclick: false,
+            responsive: true,
+            background: false,
+            zoomable: true,
+            zoomOnWheel: true,
+            zoomOnTouch: true,
+            rotatable: true,
+            checkOrientation: false,
+            checkCrossOrigin: false,
+            minCropBoxWidth: 10,
+            minCropBoxHeight: 10,
+            minContainerWidth: 200,
+            minContainerHeight: 200
         });
     }
 
