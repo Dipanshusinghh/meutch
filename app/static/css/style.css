@@ -1214,64 +1214,123 @@ footer h6 {
     .drag-drop-zone:hover .fa-cloud-upload-alt {
         color: var(--muted-text);
     }
+}/* ================================
+   CROPPER BOX (Clean UI)
+================================ */
+
+.cropper-view-box {
+    outline: 2px solid #4fd1c7 !important;
+    outline-offset: -1px;
+    border-radius: 4px;
 }
 
-/* ===================================================================
-   FIX: Image Cropper Drag Nodes Symmetry
-   =================================================================== */
+.cropper-face {
+    background-color: rgba(79, 209, 199, 0.08);
+}
+
+.cropper-line {
+    background-color: #4fd1c7 !important;
+    opacity: 0.6;
+}
+
+/* ================================
+   HANDLES (30px PERFECT NODES)
+================================ */
+
 .cropper-point {
-    width: 14px !important;
-    height: 14px !important;
-    background-color: var(--primary-color) !important;
-    opacity: 1 !important;
-    border: 2px solid white !important;
+    width: 30px !important;
+    height: 30px !important;
+    background: #4fd1c7 !important;
+    border: 4px solid #ffffff !important;
     border-radius: 50% !important;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.4) !important;
-    touch-action: none !important;
+    opacity: 1 !important;
 
-    /* 🔥 MOST IMPORTANT - Symmetry fix */
-    transform: translate(-50%, -50%) !important;
+    position: absolute;
+    z-index: 1000;
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Corners */
-.cropper-point.point-se {
-    right: 0 !important;
-    bottom: 0 !important;
+/* Hover UX */
+.cropper-point:hover {
+    transform: scale(1.2);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
 
-.cropper-point.point-sw {
-    left: 0 !important;
-    bottom: 0 !important;
-}
+/* ================================
+   CORNERS (Perfect alignment)
+================================ */
 
 .cropper-point.point-nw {
-    left: 0 !important;
-    top: 0 !important;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
 }
 
 .cropper-point.point-ne {
-    right: 0 !important;
-    top: 0 !important;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
 }
 
-/* Sides - perfect center */
-.cropper-point.point-n { top: 0 !important; left: 50% !important; }
-.cropper-point.point-s { bottom: 0 !important; left: 50% !important; }
-.cropper-point.point-e { right: 0 !important; top: 50% !important; }
-.cropper-point.point-w { left: 0 !important; top: 50% !important; }
+.cropper-point.point-sw {
+    bottom: 0;
+    left: 0;
+    transform: translate(-50%, 50%);
+}
 
-/* Remove icon shift */
-.cropper-point.point-se:before {
+.cropper-point.point-se {
+    bottom: 0;
+    right: 0;
+    transform: translate(50%, 50%);
+}
+
+/* ================================
+   SIDES (center aligned)
+================================ */
+
+.cropper-point.point-n {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cropper-point.point-s {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+}
+
+.cropper-point.point-e {
+    right: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+}
+
+.cropper-point.point-w {
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Remove default small icons */
+.cropper-point::before {
     display: none !important;
 }
 
-/* Fast drag fix */
+/* ================================
+   IMAGE & CONTAINER FIX
+================================ */
+
 .cropper-container {
-    touch-action: none !important;
+    max-width: 100%;
 }
 
-.cropper-crop-box {
-    touch-action: none !important;
+.cropper-container img {
+    max-width: 100% !important;
+    display: block;
 }
 /* ============================================
    Requests Feed — Social-media-style cards
@@ -1961,7 +2020,6 @@ html {
     font-size: 1.1rem;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-
 .landing-btn-cta:hover {
     background-color: rgba(255, 255, 255, 0.9) !important;
     transform: translateY(-1px);
