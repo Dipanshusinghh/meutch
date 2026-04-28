@@ -2,15 +2,24 @@
 
 /* Root Variables for easy theming */
 :root {
-    --primary-color: #4fd1c7;        /* Soft teal */
-    --primary-dark: #319795;         /* Darker teal */
-    --secondary-color: #718096;      /* Muted gray */
-    --success-color: #38b2ac;        /* Teal green */
-    --warning-color: #f6ad55;        /* Goldenrod */
-    --danger-color: #fc8181;         /* Coral */
-    --light-bg: #fffffe;             /* Off-white */
-    --dark-text: #2d3748;            /* Dark gray */
-    --muted-text: #718096;           /* Muted gray */
+    --primary-color: #4fd1c7;
+    /* Soft teal */
+    --primary-dark: #319795;
+    /* Darker teal */
+    --secondary-color: #718096;
+    /* Muted gray */
+    --success-color: #38b2ac;
+    /* Teal green */
+    --warning-color: #f6ad55;
+    /* Goldenrod */
+    --danger-color: #fc8181;
+    /* Coral */
+    --light-bg: #fffffe;
+    /* Off-white */
+    --dark-text: #2d3748;
+    /* Dark gray */
+    --muted-text: #718096;
+    /* Muted gray */
     --border-color: #e2e8f0;
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -26,7 +35,8 @@ body {
     background-color: var(--light-bg);
     color: var(--dark-text);
     line-height: 1.6;
-    padding-top: 70px; /* Account for fixed navbar */
+    padding-top: 70px;
+    /* Account for fixed navbar */
 }
 
 /* Custom Bootstrap Variables Override */
@@ -90,6 +100,7 @@ body {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -155,11 +166,17 @@ body {
 }
 
 .main-content .row:first-child.mb-5 {
-    margin-bottom: 2rem !important; /* Reduce from default 3rem */
+    margin-bottom: 2rem !important;
+    /* Reduce from default 3rem */
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 600;
     color: var(--dark-text);
     margin-bottom: 1rem;
@@ -370,7 +387,8 @@ h1 {
 }
 
 /* Tags and Categories */
-.category, .tag {
+.category,
+.tag {
     display: inline-block;
     padding: 0.25rem 0.75rem;
     margin: 0.125rem;
@@ -398,7 +416,8 @@ h1 {
 
 /* Tag-specific styling */
 .tag {
-    background: rgba(79, 209, 199, 0.1); /* Light teal background using primary color */
+    background: rgba(79, 209, 199, 0.1);
+    /* Light teal background using primary color */
     color: var(--primary-dark);
     border-color: var(--primary-color);
 }
@@ -463,7 +482,7 @@ input[type="file"]:focus {
         justify-content: center;
         text-align: center;
     }
-    
+
     input[type="file"]::file-selector-button {
         background: var(--primary-color);
         color: white;
@@ -475,7 +494,7 @@ input[type="file"]:focus {
         cursor: pointer;
         transition: background-color 0.2s ease;
     }
-    
+
     input[type="file"]::file-selector-button:hover {
         background: var(--primary-dark);
     }
@@ -535,11 +554,13 @@ input[type="file"]:focus {
 }
 
 /* Sections */
-.user-circles, .items-section {
+.user-circles,
+.items-section {
     margin-bottom: 3rem;
 }
 
-.user-circles h2, .items-section h2 {
+.user-circles h2,
+.items-section h2 {
     color: var(--dark-text);
     font-weight: 600;
     font-size: 1.75rem;
@@ -577,31 +598,31 @@ footer h6 {
     .main-content {
         padding: 1rem 0;
     }
-    
+
     h1 {
         font-size: 2rem;
     }
-    
+
     /* Hero logo smaller on mobile */
     .hero-logo {
         width: 80px;
         height: 80px;
     }
-    
+
     .items-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .circles-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .card-body {
         padding: 1rem;
     }
-    
+
     .circle-card {
         padding: 1rem;
     }
@@ -621,11 +642,11 @@ footer h6 {
     body {
         padding-top: 70px;
     }
-    
+
     .navbar-brand {
         font-size: 1.25rem;
     }
-    
+
     .container {
         padding: 0 1rem;
     }
@@ -658,16 +679,17 @@ footer h6 {
 
 /* Print styles */
 @media print {
+
     .navbar,
     footer,
     .btn {
         display: none !important;
     }
-    
+
     .main-content {
         padding-top: 0;
     }
-    
+
     .card {
         box-shadow: none;
         border: 1px solid #ccc;
@@ -687,8 +709,10 @@ footer h6 {
 
 /* Optional: Ensure images don't have default link styles */
 .item-link img {
-    display: block; /* Removes bottom margin/padding */
-    color: inherit; /* Inherit text color */
+    display: block;
+    /* Removes bottom margin/padding */
+    color: inherit;
+    /* Inherit text color */
 }
 
 /* Ensure inner text doesn't get extra styles from <a> */
@@ -700,7 +724,8 @@ footer h6 {
 /* Ensure the 'My Items' edit and delete buttons are styled correctly */
 .card-footer a.btn {
     margin-right: 5px;
-    text-decoration: none; /* Remove underlines from buttons */
+    text-decoration: none;
+    /* Remove underlines from buttons */
 }
 
 /* Optional: Prevent links inside the card footer from affecting the parent link */
@@ -720,6 +745,7 @@ footer h6 {
     position: relative;
     z-index: 2;
 }
+
 /* Ensure text colors are readable */
 .card-title.text-primary {
     color: #007bff !important;
@@ -734,21 +760,25 @@ footer h6 {
     height: 150px;
     object-fit: cover;
     border-radius: 50%;
-    border: 2px solid #ddd; /* Optional: Add a border for better appearance */
+    border: 2px solid #ddd;
+    /* Optional: Add a border for better appearance */
 }
 
 .profile-picture-link {
     position: fixed;
     top: 15px;
     right: 15px;
-    z-index: 1000; /* Ensures the profile picture stays above other elements */
+    z-index: 1000;
+    /* Ensures the profile picture stays above other elements */
 }
 
 .profile-picture-small {
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #fff; /* Optional: Adds a white border around the image */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional: Adds a subtle shadow for depth */
+    border: 2px solid #fff;
+    /* Optional: Adds a white border around the image */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    /* Optional: Adds a subtle shadow for depth */
     cursor: pointer;
 }
 
@@ -761,7 +791,8 @@ footer h6 {
 }
 
 .faq-item h4 {
-    color: #0d6efd; /* Bootstrap primary color */
+    color: #0d6efd;
+    /* Bootstrap primary color */
 }
 
 .faq-item p {
@@ -770,7 +801,8 @@ footer h6 {
 }
 
 .item-image {
-    max-width: 400px; /* Adjust the value as needed */
+    max-width: 400px;
+    /* Adjust the value as needed */
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -863,11 +895,11 @@ footer h6 {
         position: static;
         margin-bottom: 2rem;
     }
-    
+
     .item-detail-image {
         max-height: 60vh;
     }
-    
+
     .item-detail-image-placeholder {
         height: 300px;
     }
@@ -959,9 +991,12 @@ footer h6 {
 /* Flex Layout for Form Rows */
 .form-row {
     display: flex;
-    gap: 20px; /* Space between the columns */
-    align-items: flex-start; /* Align items to the top */
-    margin-bottom: 15px; /* Space below the row */
+    gap: 20px;
+    /* Space between the columns */
+    align-items: flex-start;
+    /* Align items to the top */
+    margin-bottom: 15px;
+    /* Space below the row */
 }
 
 .message-card {
@@ -970,34 +1005,44 @@ footer h6 {
     transition: transform 0.1s ease-in-out;
 }
 
-.message-mine, .message-theirs {
+.message-mine,
+.message-theirs {
     /* Remove margin-left and margin-right */
     margin-left: 0;
     margin-right: 0;
-    max-width: 80%; /* Optional: Adjust the width as needed */
+    max-width: 80%;
+    /* Optional: Adjust the width as needed */
     /* Ensure consistent padding */
     padding: 10px;
-    border-radius: 5px; /* Rounded corners for better aesthetics */
+    border-radius: 5px;
+    /* Rounded corners for better aesthetics */
 }
 
 /* Styles for messages sent by the current user */
 .message-mine {
-    background-color: #e3f2fd; /* Light blue */
-    border-left: 4px solid #1976d2; /* Blue border */
-    margin-left: 40px; /* Indent slightly from the left */
+    background-color: #e3f2fd;
+    /* Light blue */
+    border-left: 4px solid #1976d2;
+    /* Blue border */
+    margin-left: 40px;
+    /* Indent slightly from the left */
 }
 
 /* Styles for messages sent by others */
 .message-theirs {
-    background-color: #f5f5f5; /* Light grey */
-    border-left: 4px solid #757575; /* Grey border */
+    background-color: #f5f5f5;
+    /* Light grey */
+    border-left: 4px solid #757575;
+    /* Grey border */
     /* No indentation for others' messages */
 }
 
 /* Styles for loan-related messages */
 .message-loan {
-    border-left: 4px solid #ffc107; /* Amber border */
-    background-color: #fff8e1; /* Light amber background */
+    border-left: 4px solid #ffc107;
+    /* Amber border */
+    background-color: #fff8e1;
+    /* Light amber background */
 }
 
 .message-loan .card-header {
@@ -1006,7 +1051,8 @@ footer h6 {
 }
 
 .message-loan .loan-request-details {
-    background-color: #fff3cd; /* Light yellow background */
+    background-color: #fff3cd;
+    /* Light yellow background */
     border: 1px solid #ffeeba;
     padding: 10px;
     border-radius: 5px;
@@ -1014,7 +1060,8 @@ footer h6 {
 
 /* Optional: Add an icon to loan-related messages */
 .message-loan::before {
-    content: "📋"; /* Clipboard icon */
+    content: "📋";
+    /* Clipboard icon */
     margin-right: 8px;
     font-size: 1.2em;
     /* Ensure the icon doesn't disrupt the layout */
@@ -1024,7 +1071,8 @@ footer h6 {
 
 /* Optional: Different text color for loan-related messages */
 .message-loan p {
-    color: #856404; /* Dark yellow */
+    color: #856404;
+    /* Dark yellow */
 }
 
 /* Timestamp styling */
@@ -1043,14 +1091,16 @@ footer h6 {
 
 /* Unread message indicator */
 .unread-message {
-    border-bottom: 2px solid #dc3545; /* Red bottom border for unread messages */
+    border-bottom: 2px solid #dc3545;
+    /* Red bottom border for unread messages */
 }
 
 /* Additional styles for better distinction */
 .message-loan.message-mine {
     background-color: #fff3cd;
     border-left: 4px solid #ffc107;
-    margin-left: 40px; /* Maintain indentation */
+    margin-left: 40px;
+    /* Maintain indentation */
 }
 
 .message-loan.message-theirs {
@@ -1060,14 +1110,16 @@ footer h6 {
 
 /* Optional: Hover effects for loan-related messages */
 .message-loan:hover {
-    background-color: #ffeeba; /* Slightly darker amber on hover */
+    background-color: #ffeeba;
+    /* Slightly darker amber on hover */
 }
 
 /* Ensure icons are properly aligned */
 .message-loan .card-header::before,
 .message-loan .card-body::before {
     content: "";
-    display: none; /* Remove if not needed */
+    display: none;
+    /* Remove if not needed */
 }
 
 /* Optional: Improve readability by adding padding */
@@ -1077,7 +1129,8 @@ footer h6 {
 
 /* Optional: Adjust overall message card styles for better appearance */
 .message-card {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
 }
 
 /* Thumbnail styling */
@@ -1188,33 +1241,35 @@ footer h6 {
 /* Mobile/Touch Device Optimization */
 /* Hide drag-and-drop specific UI on touch devices where drag-and-drop isn't supported */
 @media (hover: none) and (pointer: coarse) {
+
     /* Simplify the drop zone for mobile - remove drag language */
-    .drag-drop-zone .drag-drop-content > p:first-of-type,
-    .drag-drop-zone .drag-drop-content > p:nth-of-type(2) {
+    .drag-drop-zone .drag-drop-content>p:first-of-type,
+    .drag-drop-zone .drag-drop-content>p:nth-of-type(2) {
         display: none;
     }
-    
+
     /* Make the icon smaller and adjust spacing */
     .drag-drop-content .fa-cloud-upload-alt {
         font-size: 2rem !important;
         margin-bottom: 0.5rem !important;
     }
-    
+
     /* Reduce padding on mobile */
     .drag-drop-zone {
         padding: 1.5rem 1rem;
     }
-    
+
     /* Disable hover effects on touch devices */
     .drag-drop-zone:hover {
         border-color: var(--border-color);
         background-color: #fafafa;
     }
-    
+
     .drag-drop-zone:hover .fa-cloud-upload-alt {
         color: var(--muted-text);
     }
 }
+
 /* Node sizes and symmetry */
 .cropper-point {
     width: 35px !important;
@@ -1229,14 +1284,51 @@ footer h6 {
 }
 
 /* Bulletproof positioning using top/left percentages and translate */
-.cropper-point.point-e { top: 50% !important; left: 100% !important; right: auto !important; }
-.cropper-point.point-n { top: 0 !important; left: 50% !important; }
-.cropper-point.point-w { top: 50% !important; left: 0 !important; }
-.cropper-point.point-s { top: 100% !important; left: 50% !important; bottom: auto !important; }
-.cropper-point.point-ne { top: 0 !important; left: 100% !important; right: auto !important; }
-.cropper-point.point-nw { top: 0 !important; left: 0 !important; }
-.cropper-point.point-sw { top: 100% !important; left: 0 !important; bottom: auto !important; }
-.cropper-point.point-se { top: 100% !important; left: 100% !important; right: auto !important; bottom: auto !important; }
+.cropper-point.point-e {
+    top: 50% !important;
+    left: 100% !important;
+    right: auto !important;
+}
+
+.cropper-point.point-n {
+    top: 0 !important;
+    left: 50% !important;
+}
+
+.cropper-point.point-w {
+    top: 50% !important;
+    left: 0 !important;
+}
+
+.cropper-point.point-s {
+    top: 100% !important;
+    left: 50% !important;
+    bottom: auto !important;
+}
+
+.cropper-point.point-ne {
+    top: 0 !important;
+    left: 100% !important;
+    right: auto !important;
+}
+
+.cropper-point.point-nw {
+    top: 0 !important;
+    left: 0 !important;
+}
+
+.cropper-point.point-sw {
+    top: 100% !important;
+    left: 0 !important;
+    bottom: auto !important;
+}
+
+.cropper-point.point-se {
+    top: 100% !important;
+    left: 100% !important;
+    right: auto !important;
+    bottom: auto !important;
+}
 
 /* Hover */
 .cropper-point:hover {
@@ -1302,7 +1394,10 @@ footer h6 {
 .share-preview-hero::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.25);
     pointer-events: none;
 }
@@ -1641,6 +1736,7 @@ footer h6 {
 }
 
 @keyframes fab-attention {
+
     0%,
     100% {
         transform: scale(1);
@@ -1673,25 +1769,25 @@ footer h6 {
 }
 
 /* Checked states per type */
-.btn-check:checked + .feed-type-pill--requests {
+.btn-check:checked+.feed-type-pill--requests {
     background: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
 }
 
-.btn-check:checked + .feed-type-pill--giveaways {
+.btn-check:checked+.feed-type-pill--giveaways {
     background: var(--success-color);
     border-color: var(--success-color);
     color: white;
 }
 
-.btn-check:checked + .feed-type-pill--circle-joins {
+.btn-check:checked+.feed-type-pill--circle-joins {
     background: #0dcaf0;
     border-color: #0dcaf0;
     color: white;
 }
 
-.btn-check:checked + .feed-type-pill--loans {
+.btn-check:checked+.feed-type-pill--loans {
     background: var(--secondary-color);
     border-color: var(--secondary-color);
     color: white;
@@ -1757,6 +1853,7 @@ html {
         font-weight: 600 !important;
         transition: background-color 0.2s ease, color 0.2s ease;
     }
+
     .nav-register:hover {
         background-color: var(--primary-color) !important;
         color: #fff !important;
@@ -1768,7 +1865,8 @@ html {
    - Desktop lg+: brand + Login + Register pill
 */
 .landing-page .navbar-toggler,
-.landing-page .navbar-mobile-login { /* already hidden here; shown outside collapse */
+.landing-page .navbar-mobile-login {
+    /* already hidden here; shown outside collapse */
 }
 
 .landing-page .navbar-toggler {
@@ -1790,9 +1888,11 @@ html {
         flex-grow: 1;
         align-items: center;
     }
+
     .landing-page .navbar-nav.me-auto {
         display: none !important;
     }
+
     .landing-page .navbar-collapse .navbar-nav {
         margin-left: auto;
     }
@@ -1811,7 +1911,10 @@ html {
 .landing-hero::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.25);
     pointer-events: none;
 }
@@ -1821,7 +1924,7 @@ html {
     height: 260px;
     object-fit: contain;
     opacity: 0.92;
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
 }
 
 .landing-headline {
@@ -1911,7 +2014,7 @@ html {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(79,209,199,0.15), rgba(49,151,149,0.15));
+    background: linear-gradient(135deg, rgba(79, 209, 199, 0.15), rgba(49, 151, 149, 0.15));
     color: var(--primary-dark);
     font-size: 1.5rem;
     display: flex;
@@ -2149,6 +2252,7 @@ body.multi-image-reordering * {
     .multi-image-thumb-overlay {
         opacity: 1;
     }
+
     .multi-image-grid {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         gap: 0.5rem;
