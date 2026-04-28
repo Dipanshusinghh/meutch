@@ -1255,6 +1255,15 @@ footer h6 {
 .cropper-point::before {
     display: none !important;
 }
+
+/* Multi-image drag and drop support */
+.multi-image-container.drag-over {
+    border: 2px dashed var(--primary-color) !important;
+    background-color: rgba(79, 209, 199, 0.1) !important;
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
+}
+
 /* ============================================
    Requests Feed — Social-media-style cards
    ============================================ */

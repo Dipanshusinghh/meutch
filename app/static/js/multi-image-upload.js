@@ -513,6 +513,29 @@
       handleFiles(captureInput.files, captureInput);
     });
 
+    // Drag and drop functionality
+    imageContainer.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      imageContainer.classList.add('drag-over');
+    });
+
+    imageContainer.addEventListener('dragleave', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      imageContainer.classList.remove('drag-over');
+    });
+
+    imageContainer.addEventListener('drop', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      imageContainer.classList.remove('drag-over');
+      
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleFiles(e.dataTransfer.files, fileInput);
+      }
+    });
+
     // Listen for cropped image from external modal
     container.addEventListener('multi-image:cropped', function (e) {
       var id = e.detail.id;

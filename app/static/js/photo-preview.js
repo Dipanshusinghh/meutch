@@ -187,7 +187,6 @@
         applyBtn.addEventListener('click', function(e) {
             e.preventDefault();
             if (!cropper) return;
-            
             cropper.getCroppedCanvas({
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high'
@@ -205,6 +204,15 @@
                 hideModal();
             }, 'image/jpeg', 0.9);
         });
+
+        // ── modal hidden cleanup ────────────────────────────────────
+        modalEl.addEventListener('hidden.bs.modal', function() {
+            destroyCropper();
+            revokeUrl();
+            editId = null;
+            editContainer = null;
+            editThumbEl = null;
+        });
     }
 
     function showModal(srcUrl) {
@@ -213,7 +221,6 @@
         }
         
         cropImage.src = srcUrl;
-        
         // Wait until modal is visible so Cropper can measure the container
         modalEl.addEventListener('shown.bs.modal', function onShown() {
             modalEl.removeEventListener('shown.bs.modal', onShown);
