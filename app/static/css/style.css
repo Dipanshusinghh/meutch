@@ -1215,41 +1215,33 @@ footer h6 {
         color: var(--muted-text);
     }
 }
-
+/* Node sizes and symmetry */
 .cropper-point {
     width: 35px !important;
     height: 35px !important;
     background-color: var(--primary-color) !important;
-    opacity: 0.95 !important;
-    border: 3px solid #fff;
+    opacity: 0.9 !important;
     border-radius: 50%;
-    margin: 0 !important; /* Reset Cropper margins */
     transition: all 0.2s ease;
     z-index: 10;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
 }
 
-/* Base Transforms */
-.cropper-point.point-nw { left: 0 !important; top: 0 !important; transform: translate(-50%, -50%) !important; }
-.cropper-point.point-ne { right: 0 !important; top: 0 !important; transform: translate(50%, -50%) !important; }
-.cropper-point.point-sw { left: 0 !important; bottom: 0 !important; transform: translate(-50%, 50%) !important; }
-.cropper-point.point-se { right: 0 !important; bottom: 0 !important; transform: translate(50%, 50%) !important; }
+/* Bulletproof positioning using top/left percentages and translate */
+.cropper-point.point-e { top: 50% !important; left: 100% !important; right: auto !important; }
+.cropper-point.point-n { top: 0 !important; left: 50% !important; }
+.cropper-point.point-w { top: 50% !important; left: 0 !important; }
+.cropper-point.point-s { top: 100% !important; left: 50% !important; bottom: auto !important; }
+.cropper-point.point-ne { top: 0 !important; left: 100% !important; right: auto !important; }
+.cropper-point.point-nw { top: 0 !important; left: 0 !important; }
+.cropper-point.point-sw { top: 100% !important; left: 0 !important; bottom: auto !important; }
+.cropper-point.point-se { top: 100% !important; left: 100% !important; right: auto !important; bottom: auto !important; }
 
-/* Sides */
-.cropper-point.point-n  { top: 0 !important; left: 50% !important; transform: translate(-50%, -50%) !important; }
-.cropper-point.point-s  { bottom: 0 !important; left: 50% !important; transform: translate(-50%, 50%) !important; }
-.cropper-point.point-e  { right: 0 !important; top: 50% !important; transform: translate(50%, -50%) !important; }
-.cropper-point.point-w  { left: 0 !important; top: 50% !important; transform: translate(-50%, -50%) !important; }
-
-/* Hover States */
-.cropper-point.point-nw:hover { transform: translate(-50%, -50%) scale(1.1) !important; }
-.cropper-point.point-ne:hover { transform: translate(50%, -50%) scale(1.1) !important; }
-.cropper-point.point-sw:hover { transform: translate(-50%, 50%) scale(1.1) !important; }
-.cropper-point.point-se:hover { transform: translate(50%, 50%) scale(1.1) !important; }
-
-.cropper-point.point-n:hover  { transform: translate(-50%, -50%) scale(1.1) !important; }
-.cropper-point.point-s:hover  { transform: translate(-50%, 50%) scale(1.1) !important; }
-.cropper-point.point-e:hover  { transform: translate(50%, -50%) scale(1.1) !important; }
-.cropper-point.point-w:hover  { transform: translate(-50%, -50%) scale(1.1) !important; }
+/* Hover */
+.cropper-point:hover {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+}
 
 /* Cleanup */
 .cropper-point::before {
